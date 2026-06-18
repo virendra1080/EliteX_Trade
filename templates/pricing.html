@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Pricing & Plans — EliteX Trade{% endblock %}
+
+{% block content %}
+<section class="page-hero-section">
+  <div class="container text-center">
+    <h1 class="page-hero-h1">Pricing &amp; Plans</h1>
+    <p class="page-hero-sub">Transparent pricing. No hidden fees. Cancel anytime.</p>
+  </div>
+</section>
+
+<section class="pricing-section">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      {% for plan in d.plans %}
+      <div class="col-lg-4 col-md-6">
+        <div class="plan-card {% if plan.badge %}plan-featured{% endif %}">
+          {% if plan.badge %}
+          <div class="plan-badge">{{ plan.badge }}</div>
+          {% endif %}
+          <div class="plan-popularity">{{ plan.popularity }}</div>
+          <h3 class="plan-name">{{ plan.name }}</h3>
+          <ul class="plan-features">
+            {% for f in plan.features %}
+            <li class="{% if not f.included %}striked{% endif %}">
+              {% if f.included %}<i class="bi bi-check-lg check"></i>{% else %}<i class="bi bi-x-lg cross"></i>{% endif %}
+              {{ f.text }}
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="plan-price">${{ plan.price }} <span class="plan-period">{{ plan.period }}</span></div>
+          <a href="{{ plan.cta_url }}" class="btn {% if plan.badge %}btn-gold{% else %}btn-outline-gold{% endif %} w-100 mt-3 plan-cta">{{ plan.cta }}</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-5">Frequently Asked Questions</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="accordion" id="faqAcc2">
+          {% for i, faq in enumerate(d.faqs) %}
+          <div class="accordion-item faq-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button faq-btn {% if i > 0 %}collapsed{% endif %}" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#pfaq{{ i }}">{{ faq.q }}</button>
+            </h2>
+            <div id="pfaq{{ i }}" class="accordion-collapse collapse {% if i==0 %}show{% endif %}" data-bs-parent="#faqAcc2">
+              <div class="accordion-body faq-body">{{ faq.a }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

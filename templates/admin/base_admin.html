@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin — EliteX Trade{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#070a0f;--bg2:#0c1018;--bg3:#111820;--bg4:#151d28;
+      --gold:#c9a84c;--gold-lt:#e8c76a;--gold-dim:rgba(201,168,76,0.12);
+      --txt:#e4eaf2;--txt2:#8a9ab0;--txt3:#4a5a6e;
+      --border:rgba(255,255,255,0.07);--border-g:rgba(201,168,76,0.22);
+      --sidebar-w:240px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;overflow:hidden}
+    body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:14px;display:flex}
+    a{color:var(--gold);text-decoration:none}
+    a:hover{color:var(--gold-lt)}
+    h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif;color:var(--txt)}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--border-g);border-radius:2px}
+
+    /* ── SIDEBAR ── */
+    .admin-sidebar{
+      width:var(--sidebar-w);flex-shrink:0;
+      background:var(--bg2);
+      border-right:1px solid var(--border);
+      height:100vh;overflow-y:auto;
+      display:flex;flex-direction:column;
+      position:fixed;left:0;top:0;bottom:0;
+      z-index:100;
+    }
+    .sidebar-logo{
+      padding:22px 20px 18px;
+      border-bottom:1px solid var(--border);
+      font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;
+    }
+    .sidebar-logo span.x{color:var(--gold)}
+    .sidebar-logo small{display:block;font-size:.65rem;color:var(--txt3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+
+    .sidebar-nav{padding:14px 10px;flex:1}
+    .sidebar-nav .nav-section-title{
+      font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;
+      color:var(--txt3);padding:10px 10px 5px;margin-top:8px;
+    }
+    .sidebar-link{
+      display:flex;align-items:center;gap:10px;
+      padding:9px 12px;border-radius:8px;
+      color:var(--txt2);font-size:.87rem;font-weight:500;
+      transition:background .18s,color .18s;
+      margin-bottom:2px;
+    }
+    .sidebar-link i{font-size:1rem;width:18px;text-align:center}
+    .sidebar-link:hover{background:rgba(255,255,255,.05);color:var(--txt)}
+    .sidebar-link.active{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border-g)}
+
+    .sidebar-user{
+      padding:14px 16px;border-top:1px solid var(--border);
+      display:flex;align-items:center;gap:10px;
+    }
+    .su-avatar{
+      width:34px;height:34px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,#c9a84c,#e8c76a);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:#050810;
+    }
+    .su-name{font-size:.82rem;font-weight:600;line-height:1.2}
+    .su-role{font-size:.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em}
+
+    /* ── MAIN ── */
+    .admin-main{
+      margin-left:var(--sidebar-w);
+      flex:1;height:100vh;overflow-y:auto;
+      display:flex;flex-direction:column;
+    }
+    .admin-topbar{
+      background:var(--bg2);border-bottom:1px solid var(--border);
+      padding:12px 28px;
+      display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:50;
+    }
+    .topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem}
+    .topbar-actions{display:flex;align-items:center;gap:10px}
+
+    .admin-content{padding:28px;flex:1}
+
+    /* ── CARDS ── */
+    .admin-card{
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:12px;padding:20px;
+    }
+    .admin-card-title{
+      font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;
+      color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;
+      margin-bottom:16px;display:flex;align-items:center;gap:8px;
+    }
+    .admin-card-title i{color:var(--gold)}
+
+    /* ── STAT BOXES ── */
+    .stat-box{
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:12px;padding:20px 22px;
+      display:flex;align-items:center;gap:16px;
+      transition:border-color .2s;
+    }
+    .stat-box:hover{border-color:var(--border-g)}
+    .stat-icon{
+      width:46px;height:46px;border-radius:10px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+    }
+    .si-gold{background:var(--gold-dim);color:var(--gold)}
+    .si-blue{background:rgba(79,110,247,.15);color:#7c9fff}
+    .si-green{background:rgba(74,222,128,.12);color:#4ade80}
+    .si-purple{background:rgba(168,85,247,.12);color:#c084fc}
+    .si-pink{background:rgba(236,72,153,.12);color:#f472b6}
+    .stat-info{flex:1}
+    .stat-num{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;line-height:1}
+    .stat-label{font-size:.75rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.1em;margin-top:3px}
+
+    /* ── TABLE ── */
+    .admin-table{width:100%;border-collapse:collapse;font-size:.85rem}
+    .admin-table th{
+      background:var(--bg2);color:var(--txt3);
+      font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+      padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;
+    }
+    .admin-table td{
+      padding:11px 14px;border-bottom:1px solid var(--border);
+      color:var(--txt2);vertical-align:middle;
+    }
+    .admin-table tr:last-child td{border-bottom:none}
+    .admin-table tr:hover td{background:rgba(255,255,255,.02)}
+    .admin-table .name-cell{color:var(--txt);font-weight:600}
+
+    /* ── STATUS BADGES ── */
+    .badge-status{
+      display:inline-block;padding:3px 10px;border-radius:50px;
+      font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    }
+    .bs-pending{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+    .bs-approved{background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.25)}
+    .bs-rejected{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.25)}
+    .bs-contacted{background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.25)}
+    .bs-active{background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.25)}
+    .bs-inactive{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.25)}
+    .bs-admin{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border-g)}
+    .bs-user{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+
+    /* ── BUTTONS ── */
+    .btn-gold-sm{
+      background:linear-gradient(135deg,#c9a84c,#e8c76a);color:#050810;
+      font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;
+      border:none;border-radius:6px;padding:6px 14px;
+      cursor:pointer;transition:transform .15s,box-shadow .15s;white-space:nowrap;
+    }
+    .btn-gold-sm:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.35)}
+    .btn-outline-sm{
+      background:transparent;color:var(--txt2);
+      border:1px solid var(--border);border-radius:6px;padding:5px 12px;
+      font-size:.78rem;cursor:pointer;transition:border-color .15s,color .15s;
+    }
+    .btn-outline-sm:hover{border-color:var(--border-g);color:var(--gold)}
+    .btn-danger-sm{
+      background:rgba(248,113,113,.12);color:#f87171;
+      border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:5px 12px;
+      font-size:.78rem;cursor:pointer;transition:background .15s;
+    }
+    .btn-danger-sm:hover{background:rgba(248,113,113,.25)}
+    .btn-view{
+      background:rgba(96,165,250,.12);color:#60a5fa;
+      border:1px solid rgba(96,165,250,.2);border-radius:6px;padding:5px 12px;
+      font-size:.78rem;cursor:pointer;
+    }
+
+    /* ── FORM CONTROLS ── */
+    .admin-input{
+      background:var(--bg) !important;border:1px solid var(--border) !important;
+      color:var(--txt) !important;border-radius:7px !important;
+      padding:8px 12px !important;font-size:.85rem !important;
+    }
+    .admin-input:focus{border-color:var(--gold) !important;box-shadow:0 0 0 2px rgba(201,168,76,.12) !important;outline:none !important}
+    .admin-input::placeholder{color:var(--txt3) !important}
+    .admin-input option{background:var(--bg3)}
+    .admin-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);margin-bottom:5px;display:block}
+
+    /* ── FLASH ── */
+    .admin-flash{position:fixed;top:70px;right:20px;z-index:999;min-width:300px}
+    .admin-flash .alert{background:var(--bg3);border:1px solid var(--border-g);color:var(--txt);border-radius:10px;font-size:.85rem}
+
+    /* ── SEARCH ── */
+    .search-box{position:relative}
+    .search-box i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:.9rem}
+    .search-box input{padding-left:32px !important}
+
+    /* ── MODAL ── */
+    .admin-modal .modal-content{background:var(--bg3);border:1px solid var(--border-g);border-radius:14px;color:var(--txt)}
+    .admin-modal .modal-header{border-bottom:1px solid var(--border);padding:18px 22px}
+    .admin-modal .modal-footer{border-top:1px solid var(--border);padding:14px 22px}
+    .admin-modal .modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem}
+    .admin-modal .btn-close{filter:invert(1) brightness(.6)}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{text-align:center;padding:60px 20px;color:var(--txt3)}
+    .empty-state i{font-size:2.5rem;display:block;margin-bottom:12px;opacity:.4}
+    .empty-state p{font-size:.9rem}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .admin-sidebar{width:200px}
+      .admin-main{margin-left:200px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="admin-sidebar">
+  <div class="sidebar-logo">
+    ELITE<span class="x">X</span> TRADE
+    <small>Admin Panel</small>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Overview</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {% if request.endpoint=='admin_dashboard' %}active{% endif %}">
+      <i class="bi bi-grid-fill"></i> Dashboard
+    </a>
+
+    <div class="nav-section-title">Data</div>
+    <a href="{{ url_for('admin_applications') }}" class="sidebar-link {% if request.endpoint=='admin_applications' %}active{% endif %}">
+      <i class="bi bi-file-earmark-person-fill"></i> Applications
+    </a>
+    <a href="{{ url_for('admin_trials') }}" class="sidebar-link {% if request.endpoint=='admin_trials' %}active{% endif %}">
+      <i class="bi bi-gift-fill"></i> Free Trials
+    </a>
+    <a href="{{ url_for('admin_contacts') }}" class="sidebar-link {% if request.endpoint=='admin_contacts' %}active{% endif %}">
+      <i class="bi bi-chat-left-text-fill"></i> Messages
+    </a>
+
+    <div class="nav-section-title">Users</div>
+    <a href="{{ url_for('admin_users') }}" class="sidebar-link {% if request.endpoint=='admin_users' %}active{% endif %}">
+      <i class="bi bi-people-fill"></i> Manage Users
+    </a>
+
+    <div class="nav-section-title">Site</div>
+    <a href="{{ url_for('index') }}" class="sidebar-link" target="_blank">
+      <i class="bi bi-box-arrow-up-right"></i> View Site
+    </a>
+    <a href="{{ url_for('logout') }}" class="sidebar-link">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="su-avatar">{{ current_user.name[0] }}</div>
+    <div>
+      <div class="su-name">{{ current_user.name }}</div>
+      <div class="su-role">{{ current_user.role }}</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="admin-main">
+  <div class="admin-topbar">
+    <span class="topbar-title">{% block page_title %}Dashboard{% endblock %}</span>
+    <div class="topbar-actions">
+      <a href="{{ url_for('index') }}" target="_blank" class="btn-outline-sm"><i class="bi bi-globe me-1"></i>View Site</a>
+      <a href="{{ url_for('logout') }}" class="btn-outline-sm"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+    </div>
+  </div>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="admin-flash">
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ cat }} alert-dismissible" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="admin-content">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Auto-dismiss flash
+  document.querySelectorAll('.admin-flash .alert').forEach(el => {
+    setTimeout(() => { try{ bootstrap.Alert.getOrCreateInstance(el).close() }catch(e){} }, 4000);
+  });
+  // Search filter
+  function filterTable(inputId, tableId) {
+    const q = document.getElementById(inputId).value.toLowerCase();
+    document.querySelectorAll(`#${tableId} tbody tr`).forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

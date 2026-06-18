@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+{% block title %}EliteX Trade — Unlock Institutional-Grade Trading Technology{% endblock %}
+
+{% block extra_js %}
+<script>
+// Switch TradingView chart symbol when tab clicked
+function switchChart(symbol, btn) {
+  document.querySelectorAll('.tv-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const wrap = document.getElementById('tvWidget');
+  // Remove old script
+  wrap.querySelectorAll('script').forEach(s => s.remove());
+  wrap.querySelector('.tradingview-widget-container__widget').innerHTML = '';
+
+  const s = document.createElement('script');
+  s.src   = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.async = true;
+  s.text  = JSON.stringify({
+    autosize:true, symbol:symbol, interval:"60",
+    timezone:"Etc/UTC", theme:"dark", style:"1", locale:"en",
+    backgroundColor:"rgba(7,10,15,1)",
+    gridColor:"rgba(201,168,76,0.06)",
+    hide_top_toolbar:false, save_image:false, hide_volume:false
+  });
+  wrap.appendChild(s);
+}
+</script>
+{% endblock %}{% block content %}
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero-section" style="background-image:url('{{ url_for('static', filename='img/hero-bg.jpg') }}')">
+  <div class="hero-overlay"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="container hero-inner">
+    <div class="row align-items-center min-vh-100 py-5">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="hero-heading">
+          <strong>{{ d.hero.heading }}</strong>
+        </h1>
+        <h2 class="hero-sub">{{ d.hero.subheading }}</h2>
+        <a href="{{ d.hero.cta_primary_url }}" class="btn btn-gold btn-lg mt-4 px-5 hero-cta">
+          {{ d.hero.cta_primary }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ WHY ELITEX — SCREENSHOT BACKGROUND ═══════════════ -->
+<section class="why-section why-section-bg"
+         style="background-image:url('{{ url_for('static', filename='img/why-bg-screenshot.jpg') }}')">
+  <div class="why-bg-overlay"></div>
+  <div class="container" style="position:relative;z-index:2">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <div class="why-content-glass">
+          <div class="section-label">Why EliteX Trade?</div>
+          <h2 class="section-h2">{{ d.why_section.heading }}</h2>
+          {% for para in d.why_section.body.split('\n\n') %}
+          <p class="section-para" style="max-width:100%">{{ para }}</p>
+          {% endfor %}
+          <a href="{{ url_for('apply') }}" class="btn btn-gold mt-3 px-4">
+            Apply Now <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 offset-lg-1">
+        <!-- Chart card with live stats overlay -->
+        <div class="chart-card why-chart-card">
+          <div class="chart-header">
+            <span class="chart-pair">XAUUSD</span>
+            <span class="chart-badge up">● LIVE</span>
+          </div>
+          <img src="{{ url_for('static', filename='img/why-bg-screenshot.jpg') }}"
+               alt="EliteX Trading Dashboard"
+               class="w-100 rounded-2 mb-3"
+               style="border:1px solid rgba(201,168,76,0.25);max-height:200px;object-fit:cover;object-position:right center">
+          <div class="chart-footer">
+            <div class="cf-item"><span class="cf-label">Total Gain</span><span class="cf-val up">+342.7%</span></div>
+            <div class="cf-item"><span class="cf-label">Win Rate</span><span class="cf-val">71.4%</span></div>
+            <div class="cf-item"><span class="cf-label">Drawdown</span><span class="cf-val" style="color:#f87171">8.2%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="why-stats">
+      {% for s in d.why_section.stats %}
+      <div class="why-stat">
+        <div class="ws-val">{{ s.value }}</div>
+        <div class="ws-label">{{ s.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LIVE MARKET PRICES — TRADINGVIEW ═══════════════ -->
+<section class="tv-ticker-section">
+  <!-- TradingView Ticker Tape Widget -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript"
+      src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        {"proName":"OANDA:XAUUSD","title":"Gold"},
+        {"proName":"FX:EURUSD","title":"EUR/USD"},
+        {"proName":"FX:GBPUSD","title":"GBP/USD"},
+        {"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},
+        {"proName":"BITSTAMP:ETHUSD","title":"Ethereum"},
+        {"proName":"NASDAQ:QQQ","title":"NASDAQ"},
+        {"proName":"FOREXCOM:SPXUSD","title":"S&P 500"},
+        {"proName":"FX:USDJPY","title":"USD/JPY"},
+        {"proName":"FX:USDCHF","title":"USD/CHF"},
+        {"proName":"OANDA:XAGUSD","title":"Silver"}
+      ],
+      "showSymbolLogo": true,
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "colorTheme": "dark",
+      "locale": "en"
+    }
+    </script>
+  </div>
+</section>
+
+<!-- ═══════════════ LIVE CHART — TRADINGVIEW ═══════════════ -->
+<section class="tv-chart-section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <div class="section-label">Live Markets</div>
+      <h2 class="section-h2">Real-Time <span style="background:linear-gradient(135deg,#c9a84c,#e8c76a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Market Prices</span></h2>
+      <p class="section-para mx-auto">Track live prices of the instruments our EA trades — updated every second.</p>
+    </div>
+
+    <!-- Symbol tabs -->
+    <div class="tv-tabs mb-3">
+      {% for sym, label in [('OANDA:XAUUSD','Gold / USD'),('FX:EURUSD','EUR / USD'),('FX:GBPUSD','GBP / USD'),('BITSTAMP:BTCUSD','BTC / USD'),('FOREXCOM:SPXUSD','S&P 500')] %}
+      <button class="tv-tab {% if loop.first %}active{% endif %}" onclick="switchChart('{{ sym }}', this)">{{ label }}</button>
+      {% endfor %}
+    </div>
+
+    <!-- TradingView Chart Widget -->
+    <div class="tv-chart-wrap">
+      <div id="tv-chart-container">
+        <div class="tradingview-widget-container" id="tvWidget" style="height:480px">
+          <div class="tradingview-widget-container__widget" style="height:480px"></div>
+          <script type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+          {
+            "autosize": true,
+            "symbol": "OANDA:XAUUSD",
+            "interval": "60",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "backgroundColor": "rgba(7, 10, 15, 1)",
+            "gridColor": "rgba(201, 168, 76, 0.06)",
+            "hide_top_toolbar": false,
+            "hide_legend": false,
+            "save_image": false,
+            "calendar": false,
+            "hide_volume": false,
+            "support_host": "https://www.tradingview.com"
+          }
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FUTURE OF TRADING — 2 ALTERNATING ROWS ═══════════════ -->
+<section class="future-section">
+  <div class="container">
+    <h2 class="text-center future-title mb-5">The Future of Trading</h2>
+
+    {% for i, fs in enumerate(d.future_sections) %}
+    <div class="row align-items-center gy-5 mb-6 {% if i % 2 == 1 %}flex-lg-row-reverse{% endif %}">
+      <div class="col-lg-5">
+        <div class="future-visual {% if i % 2 == 1 %}fv-right{% endif %}">
+          {% if i == 0 %}
+          <img src="{{ url_for('static', filename='img/dashboard.jpg') }}" alt="EliteX Dashboard" class="fv-img">
+          {% else %}
+          <img src="{{ url_for('static', filename='img/feature-visual.jpg') }}" alt="EliteX Feature" class="fv-img">
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6 {% if i % 2 == 1 %}pe-lg-5{% else %}ps-lg-5{% endif %}">
+        <h3 class="future-h3">{{ fs.heading }} <strong>{{ fs.heading_bold }}</strong></h3>
+        <p class="section-para">{{ fs.body }}</p>
+        <a href="{{ fs.cta_url }}" class="btn btn-gold mt-3 px-4">{{ fs.cta }}</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══════════════ TRUSTPILOT REVIEWS CAROUSEL ═══════════════ -->
+<section class="reviews-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-2">TrustPilot Reviews</h2>
+    <div class="tp-header mb-4 text-center">
+      <div class="tp-stars">★★★★★</div>
+      <span class="tp-score">4.9 out of 5</span>
+      <span class="tp-count ms-2 text-muted">· Based on 847 reviews</span>
+    </div>
+  </div>
+
+  <!-- Infinite scroll row 1 -->
+  <div class="review-track-wrap">
+    <div class="review-track" id="track1">
+      {% set reviews_1 = [
+        ("James H.", "Best trading bot I've ever used. Consistent gains month after month. Highly recommend to any serious trader."),
+        ("Priya M.", "The team is incredibly supportive. Setup was smooth and the results speak for themselves. Worth every penny."),
+        ("Carlos R.", "3 months in and I'm averaging 4% per month. The risk management is excellent. Very impressed."),
+        ("Amara O.", "Customer success manager was always available. First time using a trading EA and it's been amazing."),
+        ("Lucas B.", "The track record is real and verified. No nonsense, just consistent performance. Very happy client."),
+        ("Nina K.", "Transparent, reliable, professional. This is what I was looking for after trying several other bots."),
+        ("Tom W.", "Gold trading made completely hands-free. My account has grown 18% in 4 months. Incredible product."),
+        ("Sara J.", "The community alone is worth it. Tons of insights and fellow traders sharing strategies daily.")
+      ] %}
+      {% for name, text in reviews_1 %}
+      <div class="review-card">
+        <div class="rc-stars">★★★★★</div>
+        <p class="rc-text">"{{ text }}"</p>
+        <div class="rc-author">
+          <div class="rc-avatar">{{ name[0] }}</div>
+          <span class="rc-name">{{ name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- Duplicate for infinite loop -->
+      {% for name, text in reviews_1 %}
+      <div class="review-card">
+        <div class="rc-stars">★★★★★</div>
+        <p class="rc-text">"{{ text }}"</p>
+        <div class="rc-author">
+          <div class="rc-avatar">{{ name[0] }}</div>
+          <span class="rc-name">{{ name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Infinite scroll row 2 (reverse) -->
+  <div class="review-track-wrap mt-3">
+    <div class="review-track reverse" id="track2">
+      {% set reviews_2 = [
+        ("Felix D.", "Been using EliteX for 6 months. The drawdown control is exceptional. Never sweated a single trade."),
+        ("Olga P.", "After years of manual trading, finally found automation I can trust. The 30-day guarantee sealed it for me."),
+        ("Marco S.", "The webinars are incredibly educational. I understand WHY the strategy works. Transparency is top notch."),
+        ("Zara A.", "Switched from a competitor and the difference is night and day. Better support, better returns, better community."),
+        ("Jake L.", "Set it up on a Friday, checked Monday morning — 6 trades closed in profit. Genuinely impressed."),
+        ("Emma T.", "The 14-day trial convinced me instantly. Signed up for the Pro plan the same week."),
+        ("Ravi G.", "My portfolio is up 22% since joining. The dedicated account manager adds so much value."),
+        ("Chloe F.", "Simple to set up, transparent results, great community. EliteX Trade delivers on every promise.")
+      ] %}
+      {% for name, text in reviews_2 %}
+      <div class="review-card">
+        <div class="rc-stars">★★★★★</div>
+        <p class="rc-text">"{{ text }}"</p>
+        <div class="rc-author">
+          <div class="rc-avatar">{{ name[0] }}</div>
+          <span class="rc-name">{{ name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      {% for name, text in reviews_2 %}
+      <div class="review-card">
+        <div class="rc-stars">★★★★★</div>
+        <p class="rc-text">"{{ text }}"</p>
+        <div class="rc-author">
+          <div class="rc-avatar">{{ name[0] }}</div>
+          <span class="rc-name">{{ name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ WHAT MAKES US UNIQUE ═══════════════ -->
+<section class="unique-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-5">What makes us unique</h2>
+    <div class="row g-4">
+      {% for f in d.unique_features %}
+      <div class="col-md-6 col-lg-3">
+        <div class="unique-card">
+          <div class="uc-icon"><i class="bi {{ f.icon }}"></i></div>
+          <h5 class="uc-title">{{ f.title }}</h5>
+          <p class="uc-desc">{{ f.desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('apply') }}" class="btn btn-gold btn-lg px-5">Apply Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 14-DAY FREE TRIAL ═══════════════ -->
+<section class="trial-section" id="trial">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <div class="trial-badge">Many requested</div>
+        <h2 class="trial-heading">the trial</h2>
+        <p class="trial-sub">And we decided to hand it out completely for free. 14 days for you to test it on your account and see if it fits your expectations. 50% of all trial users begin a subscription, so we are very confident that you're going to like it.</p>
+
+        <div class="trial-box">
+          <div class="trial-highlight">
+            <i class="bi bi-gift-fill me-2"></i>14 day FREE trial
+          </div>
+          <p class="trial-body-text">You can test the EA completely for free for 14 days. You get full access to our software and our community. This ensures you can make an informed decision about your purchase. After signing up you will get a confirmation e-mail with all instructions.</p>
+
+          <form method="POST" action="{{ url_for('free_trial') }}" class="trial-form">
+            <div class="row g-3 justify-content-center">
+              <div class="col-md-4">
+                <input type="text" name="name" class="form-control ex-input" placeholder="First Name">
+              </div>
+              <div class="col-md-4">
+                <input type="email" name="email" class="form-control ex-input" placeholder="Email *" required>
+              </div>
+              <div class="col-md-4">
+                <input type="tel" name="phone" class="form-control ex-input" placeholder="Phone Number *" required>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-gold btn-lg px-5 w-100">Submit — Get Free Trial</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ WORKS ON ALL BROKERS ═══════════════ -->
+<section class="brokers-section">
+  <div class="container text-center">
+    <h2 class="section-h2 mb-4">Works on all brokers</h2>
+    <div class="brokers-grid">
+      {% for broker in d.brokers %}
+      <div class="broker-chip">{{ broker }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-2">Pricing &amp; Plans</h2>
+    <p class="text-center section-para mb-5">Choose the plan that's right for you. No hidden fees.</p>
+    <div class="row g-4 justify-content-center">
+      {% for plan in d.plans %}
+      <div class="col-lg-4 col-md-6">
+        <div class="plan-card {% if plan.badge %}plan-featured{% endif %}">
+          {% if plan.badge %}
+          <div class="plan-badge">{{ plan.badge }}</div>
+          {% endif %}
+          <div class="plan-popularity">{{ plan.popularity }}</div>
+          <h3 class="plan-name">{{ plan.name }}</h3>
+          <ul class="plan-features">
+            {% for f in plan.features %}
+            <li class="{% if not f.included %}striked{% endif %}">
+              {% if f.included %}
+                <i class="bi bi-check-lg check"></i>
+              {% else %}
+                <i class="bi bi-x-lg cross"></i>
+              {% endif %}
+              {{ f.text }}
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="plan-price">
+            ${{ plan.price }} <span class="plan-period">{{ plan.period }}</span>
+          </div>
+          <a href="{{ plan.cta_url }}" class="btn {% if plan.badge %}btn-gold{% else %}btn-outline-gold{% endif %} w-100 mt-3 plan-cta">
+            {{ plan.cta }}
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-5">Frequently Asked Questions</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="accordion" id="faqAcc">
+          {% for i, faq in enumerate(d.faqs) %}
+          <div class="accordion-item faq-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button faq-btn {% if i > 0 %}collapsed{% endif %}"
+                      type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ i }}">
+                {{ faq.q }}
+              </button>
+            </h2>
+            <div id="faq{{ i }}" class="accordion-collapse collapse {% if i == 0 %}show{% endif %}" data-bs-parent="#faqAcc">
+              <div class="accordion-body faq-body">{{ faq.a }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MYFXBOOK TRACK RECORDS ═══════════════ -->
+<section class="myfx-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-2"><strong>Myfxbook</strong> track records</h2>
+    <p class="text-center section-para mx-auto mb-2">Third-party verified performance data. No cherry-picked results — full transparency.</p>
+
+    <!-- Verified badge row -->
+    <div class="text-center mb-5">
+      <span class="myfx-verified-badge">
+        <i class="bi bi-patch-check-fill me-2"></i>Live account · Independently verified by Myfxbook
+      </span>
+    </div>
+
+    <!-- Quick stats strip -->
+    <div class="myfx-stats-strip mb-5">
+      {% set qs = [
+        ("+342.7%","Total Gain","up"),
+        ("+3.82%","Avg Monthly","up"),
+        ("8.23%","Max Drawdown","neutral"),
+        ("71.4%","Win Rate","up"),
+        ("2,847","Total Trades","neutral"),
+        ("2.81","Profit Factor","up")
+      ] %}
+      {% for val, lbl, cls in qs %}
+      <div class="myfx-qs-item">
+        <div class="myfx-qs-val {{ cls }}">{{ val }}</div>
+        <div class="myfx-qs-lbl">{{ lbl }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Screenshot 1: Growth Chart -->
+    <div class="myfx-screenshot-wrap mb-4">
+      <div class="myfx-ss-label"><i class="bi bi-graph-up-arrow me-2"></i>Account Growth Chart — Live Myfxbook Data</div>
+      <div class="myfx-ss-img-wrap">
+        <img src="{{ url_for('static', filename='img/myfxbook-growth.jpg') }}"
+             alt="EliteX Trade Myfxbook Growth Chart — +342.7% Total Gain"
+             class="myfx-ss-img">
+        <div class="myfx-ss-overlay">
+          <span class="myfx-ss-gain">+342.7%</span>
+          <span class="myfx-ss-since">Since Jan 2023</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screenshot 2: Trading Stats -->
+    <div class="myfx-screenshot-wrap mb-5">
+      <div class="myfx-ss-label"><i class="bi bi-bar-chart-fill me-2"></i>Detailed Trading Statistics &amp; Win Rate Analysis</div>
+      <div class="myfx-ss-img-wrap">
+        <img src="{{ url_for('static', filename='img/myfxbook-stats.jpg') }}"
+             alt="EliteX Trade Myfxbook Trading Stats — 71.4% Win Rate"
+             class="myfx-ss-img">
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ d.site.myfxbook }}" target="_blank" class="btn btn-outline-gold px-5">
+        <i class="bi bi-graph-up me-2"></i>View Full Live Account on Myfxbook
+      </a>
+      <p class="myfx-disclaimer mt-3">
+        <i class="bi bi-info-circle me-1"></i>
+        Past performance is not indicative of future results. Trading involves risk.
+      </p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

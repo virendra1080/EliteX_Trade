@@ -1,0 +1,131 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Users — EliteX Admin{% endblock %}
+{% block page_title %}<i class="bi bi-people-fill me-2" style="color:var(--gold)"></i>Manage Users{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <!-- Users Table -->
+  <div class="col-lg-8">
+    <div class="admin-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+        <div class="admin-card-title" style="margin-bottom:0">
+          <i class="bi bi-people-fill"></i> All Users
+          <span style="background:var(--gold-dim);color:var(--gold);border-radius:50px;padding:2px 10px;font-size:.72rem;margin-left:8px">{{ users|length }} total</span>
+        </div>
+        <div class="search-box" style="width:200px">
+          <i class="bi bi-search"></i>
+          <input type="text" class="admin-input w-100" id="userSearch" placeholder="Search…" oninput="filterTable('userSearch','userTable')">
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="admin-table" id="userTable">
+          <thead>
+            {# NO password_hash column, NO raw ID shown #}
+            <tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            {% for u in users %}
+            <tr>
+              <td class="name-cell">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#e8c76a);
+                              display:flex;align-items:center;justify-content:center;
+                              font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem;color:#050810;flex-shrink:0">
+                    {{ u.name[0] }}
+                  </div>
+                  {{ u.name }}
+                </div>
+              </td>
+              <td style="color:var(--txt2)">@{{ u.username }}</td>
+              <td><a href="mailto:{{ u.email }}" style="color:var(--txt2)">{{ u.email }}</a></td>
+              <td>
+                <span class="badge-status bs-{{ u.role }}">{{ u.role }}</span>
+              </td>
+              <td style="color:var(--txt3);white-space:nowrap;font-size:.8rem">{{ u.created[:10] }}</td>
+              <td>
+                <span class="badge-status {% if u.get('active', true) %}bs-active{% else %}bs-inactive{% endif %}">
+                  {% if u.get('active', true) %}Active{% else %}Inactive{% endif %}
+                </span>
+              </td>
+              <td>
+                {% if u.role == 'admin' %}
+                  <span style="color:var(--txt3);font-size:.75rem"><i class="bi bi-shield-fill me-1" style="color:var(--gold)"></i>Protected</span>
+                {% elif u.get('google_id') %}
+                  <span style="color:#7c9fff;font-size:.75rem"><i class="bi bi-google me-1"></i>Google user</span>
+                {% else %}
+                <form method="POST" action="{{ url_for('admin_toggle_user', uid=u.id) }}" style="display:inline">
+                  <button type="submit" class="{% if u.get('active',true) %}btn-danger-sm{% else %}btn-gold-sm{% endif %}">
+                    {% if u.get('active',true) %}Deactivate{% else %}Activate{% endif %}
+                  </button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Form — only allows role=user; admin is always singular -->
+  <div class="col-lg-4">
+    <div class="admin-card">
+      <div class="admin-card-title"><i class="bi bi-person-plus-fill"></i> Add New User</div>
+      <p style="font-size:.78rem;color:var(--txt3);margin-bottom:16px">
+        <i class="bi bi-shield-lock me-1" style="color:var(--gold)"></i>
+        Only one admin account is allowed. New accounts are created as regular users.
+      </p>
+      <form method="POST" action="{{ url_for('admin_add_user') }}">
+        <div class="mb-3">
+          <label class="admin-label">Full Name *</label>
+          <input type="text" name="name" class="admin-input w-100" placeholder="John Smith" required>
+        </div>
+        <div class="mb-3">
+          <label class="admin-label">Username *</label>
+          <input type="text" name="username" class="admin-input w-100" placeholder="johnsmith" required>
+        </div>
+        <div class="mb-3">
+          <label class="admin-label">Email *</label>
+          <input type="email" name="email" class="admin-input w-100" placeholder="john@email.com" required>
+        </div>
+        <div class="mb-4">
+          <label class="admin-label">Password *</label>
+          <input type="password" name="password" class="admin-input w-100" placeholder="Min 6 characters" required minlength="6">
+        </div>
+        {# Role is always 'user' — hidden input, no option for admin #}
+        <input type="hidden" name="role" value="user">
+        <button type="submit" class="btn-gold-sm" style="width:100%;text-align:center">
+          <i class="bi bi-person-plus me-1"></i>Create User Account
+        </button>
+      </form>
+    </div>
+
+    <!-- Admin account info card -->
+    {% set admin_user = users | selectattr('role','equalto','admin') | list | first %}
+    {% if admin_user %}
+    <div class="admin-card mt-3">
+      <div class="admin-card-title"><i class="bi bi-shield-fill"></i> Admin Account</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#e8c76a);
+                    display:flex;align-items:center;justify-content:center;
+                    font-family:'Syne',sans-serif;font-weight:800;color:#050810;flex-shrink:0">
+          {{ admin_user.name[0] }}
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem">{{ admin_user.name }}</div>
+          <div style="font-size:.75rem;color:var(--txt3)">@{{ admin_user.username }} · {{ admin_user.email }}</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;padding:8px 10px;background:var(--gold-dim);border-radius:8px;border:1px solid var(--border-g)">
+        <div style="font-size:.73rem;color:var(--gold)">
+          <i class="bi bi-info-circle me-1"></i>
+          Only one admin exists. To change admin credentials, edit <code style="background:none;color:var(--gold)">data/data.json</code> directly.
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

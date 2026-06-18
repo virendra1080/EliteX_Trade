@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found — EliteX Trade{% endblock %}
+{% block discord_banner %}{% endblock %}
+{% block content %}
+<section class="page-hero-section" style="min-height:60vh;display:flex;align-items:center;">
+  <div class="container text-center">
+    <div style="font-family:'Syne',sans-serif;font-size:8rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#c9a84c,#e8c76a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">404</div>
+    <h1 class="page-hero-h1 mt-2">Page Not Found</h1>
+    <p class="page-hero-sub">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-gold btn-lg px-5 mt-4">← Back to Home</a>
+  </div>
+</section>
+{% endblock %}

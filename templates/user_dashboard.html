@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — EliteX Trade{% endblock %}
+{% block discord_banner %}{% endblock %}
+
+{% block content %}
+<section class="page-hero-section" style="padding:120px 0 50px">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+      <div>
+        <h1 class="page-hero-h1" style="font-size:2rem;text-align:left;margin-bottom:4px">
+          Welcome, <span style="background:linear-gradient(135deg,#c9a84c,#e8c76a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{{ current_user.name }}</span>
+        </h1>
+        <p class="page-hero-sub" style="text-align:left;margin:0">Here's your EliteX Trade account overview.</p>
+      </div>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-gold">
+        <i class="bi bi-box-arrow-right me-1"></i>Logout
+      </a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="udash-stat">
+          <div class="uds-icon" style="background:var(--gold-dim);color:var(--gold)"><i class="bi bi-file-earmark-person-fill"></i></div>
+          <div class="uds-num">{{ my_apps|length }}</div>
+          <div class="uds-label">Applications</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="udash-stat">
+          <div class="uds-icon" style="background:rgba(74,222,128,.12);color:#4ade80"><i class="bi bi-gift-fill"></i></div>
+          <div class="uds-num">{{ my_trials|length }}</div>
+          <div class="uds-label">Trial Requests</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="udash-stat">
+          <div class="uds-icon" style="background:rgba(79,110,247,.15);color:#7c9fff"><i class="bi bi-person-check-fill"></i></div>
+          <div class="uds-num">{{ current_user.role.capitalize() }}</div>
+          <div class="uds-label">Account Type</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="udash-stat">
+          <div class="uds-icon" style="background:rgba(168,85,247,.12);color:#c084fc"><i class="bi bi-calendar-check"></i></div>
+          <div class="uds-num" style="font-size:.9rem">{{ current_user.created[:10] }}</div>
+          <div class="uds-label">Member Since</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIVE MARKET PRICES ── -->
+    <div class="udash-card mb-4">
+      <div class="udash-card-title"><i class="bi bi-graph-up-arrow"></i> Live Market Prices</div>
+
+      <!-- Ticker tape -->
+      <div class="tradingview-widget-container mb-3" style="border-radius:8px;overflow:hidden">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript"
+          src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols":[
+            {"proName":"OANDA:XAUUSD","title":"Gold"},
+            {"proName":"FX:EURUSD","title":"EUR/USD"},
+            {"proName":"FX:GBPUSD","title":"GBP/USD"},
+            {"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},
+            {"proName":"FOREXCOM:SPXUSD","title":"S&P 500"},
+            {"proName":"FX:USDJPY","title":"USD/JPY"}
+          ],
+          "showSymbolLogo":true,"isTransparent":true,
+          "displayMode":"adaptive","colorTheme":"dark","locale":"en"
+        }
+        </script>
+      </div>
+
+      <!-- Mini charts row -->
+      <div class="row g-3">
+        {% for sym, lbl in [('OANDA:XAUUSD','Gold/USD'),('FX:EURUSD','EUR/USD'),('BITSTAMP:BTCUSD','BTC/USD')] %}
+        <div class="col-md-4">
+          <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;height:200px">
+            <div class="tradingview-widget-container" style="height:200px">
+              <div class="tradingview-widget-container__widget" style="height:200px"></div>
+              <script type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+              {
+                "symbol":"{{ sym }}","width":"100%","height":200,
+                "locale":"en","dateRange":"1D",
+                "colorTheme":"dark","isTransparent":true,
+                "autosize":true,"largeChartUrl":""
+              }
+              </script>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:.72rem;color:var(--txt3);margin-top:5px">{{ lbl }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ── APPLICATIONS TABLE ── -->
+    <div class="udash-card mb-4">
+      <div class="udash-card-title"><i class="bi bi-file-earmark-person-fill"></i> My Applications</div>
+      {% if my_apps %}
+      <div style="overflow-x:auto">
+        <table class="udash-table">
+          <thead>
+            <tr><th>#</th><th>Plan</th><th>Experience</th><th>Capital</th><th>Status</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            {% for a in my_apps %}
+            <tr>
+              <td>{{ a.id }}</td>
+              <td><strong>{{ a.plan or '—' }}</strong></td>
+              <td>{{ a.experience or '—' }}</td>
+              <td>{{ a.capital or '—' }}</td>
+              <td>
+                <span class="udash-badge {% if a.status=='approved' %}ub-green{% elif a.status=='rejected' %}ub-red{% elif a.status=='contacted' %}ub-blue{% else %}ub-yellow{% endif %}">
+                  {{ a.status.capitalize() }}
+                </span>
+              </td>
+              <td style="color:var(--txt2);font-size:.82rem">{{ a.date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="udash-empty"><i class="bi bi-inbox"></i> No applications yet. <a href="{{ url_for('apply') }}">Apply now →</a></div>
+      {% endif %}
+    </div>
+
+    <!-- Quick actions -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <a href="{{ url_for('apply') }}" class="udash-action-card">
+          <i class="bi bi-file-earmark-plus-fill"></i>
+          <span>New Application</span>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="{{ url_for('index') }}#trial" class="udash-action-card">
+          <i class="bi bi-gift-fill"></i>
+          <span>Request Free Trial</span>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="{{ url_for('contact') }}" class="udash-action-card">
+          <i class="bi bi-chat-left-text-fill"></i>
+          <span>Contact Support</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

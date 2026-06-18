@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}About Us — EliteX Trade{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ── -->
+<section class="page-hero-section">
+  <div class="container text-center">
+    <h1 class="page-hero-h1">Enhance Your Portfolio with a Trusted<br><strong>Algorithmic Trading Solution</strong></h1>
+    <p class="page-hero-sub">Built on Trust, Expertise, and a Commitment to Your Financial Growth</p>
+    <a href="{{ url_for('apply') }}" class="btn btn-gold btn-lg px-5 mt-3">Apply Now</a>
+  </div>
+</section>
+
+<!-- ── TEAM ── -->
+<section class="team-section">
+  <div class="container">
+    <h2 class="text-center section-h2 mb-2">Meet the Team of <strong>Professionals</strong></h2>
+    <p class="text-center section-para mx-auto mb-5">
+      The team behind EliteX Trade combines expertise, trust, and a passion for innovation. Our founders bring over a decade of experience in algorithmic trading, managing multi-million-dollar portfolios and developing retail-focused algorithms — delivering a trading solution built on professionalism, insight, and a commitment to helping clients achieve success.
+    </p>
+    <div class="row g-4 justify-content-center">
+      {% for m in d.team %}
+      <div class="col-6 col-md-3">
+        <div class="team-card">
+          {% set slug = m.name.lower().replace(' ', '-') %}
+        <div class="team-avatar-wrap">
+          <img src="{{ url_for('static', filename='img/team-' ~ slug ~ '.jpg') }}" alt="{{ m.name }}" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="team-avatar" style="display:none">{{ m.name[0] }}{{ m.name.split()[1][0] }}</div>
+        </div>
+          <h5 class="team-name">{{ m.name }}</h5>
+          <div class="team-role">{{ m.role }}</div>
+          <p class="team-bio">{{ m.bio }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── POWERED BY ── -->
+<section class="powered-section">
+  <div class="container text-center">
+    <h4 class="powered-label">powered by</h4>
+    <div class="powered-logos">
+      {% set tech = ["MetaTrader 5","Python","TensorFlow","AWS","Bloomberg","Myfxbook","MT4"] %}
+      {% for t in tech %}
+      <div class="powered-chip">{{ t }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section class="about-stats-section">
+  <div class="container">
+    <div class="row g-4 text-center">
+      {% for s in d.why_section.stats %}
+      <div class="col-md-4">
+        <div class="about-stat-card">
+          <div class="asc-val">{{ s.value }}</div>
+          <div class="asc-label">{{ s.label }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

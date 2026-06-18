@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Login — EliteX Trade{% endblock %}
+{% block discord_banner %}{% endblock %}
+
+{% block content %}
+<section class="page-hero-section" style="padding:120px 0 60px">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-7 col-lg-5">
+        <div class="auth-box">
+          <div class="auth-logo">ELITE<span>X</span> TRADE</div>
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-sub">Sign in to your account</p>
+
+          <form method="POST" action="{{ url_for('login', next=request.args.get('next','')) }}" novalidate>
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <div class="input-icon-wrap">
+                <i class="bi bi-person-fill input-icon"></i>
+                <input type="text" name="username" class="form-control ex-input ps-icon"
+                       placeholder="Enter username" required autocomplete="username">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Password</label>
+              <div class="input-icon-wrap">
+                <i class="bi bi-lock-fill input-icon"></i>
+                <input type="password" name="password" class="form-control ex-input ps-icon"
+                       placeholder="Enter password" required autocomplete="current-password" id="pwField">
+                <button type="button" class="pw-toggle" onclick="togglePw('pwField','pwEye')">
+                  <i class="bi bi-eye" id="pwEye"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-gold w-100 btn-lg">
+              Sign In <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </form>
+
+          <div class="auth-divider"><span>or</span></div>
+          <div class="auth-links">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Create one</a></p>
+            <p class="mt-1"><a href="{{ url_for('index') }}"><i class="bi bi-arrow-left me-1"></i>Back to Home</a></p>
+          </div>
+
+          <div class="auth-demo-creds">
+            <div class="adc-title"><i class="bi bi-info-circle me-1"></i>Demo Credentials</div>
+            <div class="adc-row"><span>Admin</span><code>admin / admin123</code></div>
+            <div class="adc-row"><span>User</span><code>user1 / user123</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePw(fieldId, eyeId) {
+  const f = document.getElementById(fieldId);
+  const e = document.getElementById(eyeId);
+  if (f.type==='password'){ f.type='text'; e.className='bi bi-eye-slash'; }
+  else { f.type='password'; e.className='bi bi-eye'; }
+}
+</script>
+{% endblock %}

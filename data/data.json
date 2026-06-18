@@ -1,0 +1,357 @@
+{
+  "site": {
+    "name": "EliteX Trade",
+    "tagline": "Unlock institutional-grade Trading Technology",
+    "email": "support@elitextrade.com",
+    "phone": "+1 615 682 22 48",
+    "address": "30 N Gould St, STE R, Sheridan, WY 82801",
+    "discord": "https://discord.gg/elitextrade",
+    "telegram": "https://t.me/elitextradebot",
+    "instagram": "https://instagram.com/elitextrade",
+    "youtube": "https://youtube.com/@elitextrade",
+    "whatsapp": "https://wa.me/16156822248",
+    "myfxbook": "https://www.myfxbook.com"
+  },
+  "announcement": "Monthly plan starts at $119/month. Click here",
+  "announcement_url": "/pricing",
+  "hero": {
+    "heading": "Unlock institutional-grade Trading Technology",
+    "subheading": "Exclusively for Elite Investors: License Our Advanced Trading Software for Your Account Today",
+    "cta_primary": "Apply Now & Secure Your Call!",
+    "cta_primary_url": "/apply"
+  },
+  "why_section": {
+    "heading": "Why EliteX Trade?",
+    "body": "EliteX Trade is a cutting-edge trading solution designed to simplify wealth growth. By focusing on consistent and steady performance, it allows you to benefit from the same advanced technology used by professionals\u2014all without requiring any trading expertise.\n\nUnlike many other systems, EliteX Trade prioritizes safety and reliability, offering a hands-free experience that lets you focus on what matters most while your investments work for you.",
+    "stats": [
+      {
+        "value": "3200+",
+        "label": "Community Members"
+      },
+      {
+        "value": "Trackrecord",
+        "label": "Third party verified results"
+      },
+      {
+        "value": "8+ Years",
+        "label": "Experience trading Forex"
+      }
+    ]
+  },
+  "future_sections": [
+    {
+      "heading": "One EliteX Trade,",
+      "heading_bold": "countless possibilities",
+      "body": "Take your trading to the next level with EliteX Trade. Our state-of-the-art technology empowers you to achieve steady, consistent results, all with a fully automated solution that works for you. Whether you're an experienced trader or just starting, EliteX Trade simplifies the complexities of the market, allowing you to focus on what truly matters while it handles the rest.",
+      "cta": "Apply Now",
+      "cta_url": "/apply"
+    },
+    {
+      "heading": "The gold standard",
+      "heading_bold": "in trading robots",
+      "body": "Discover why EliteX Trade is trusted by traders worldwide. Designed to deliver precision and consistent performance, this automated trading bot adapts to various market conditions and asset classes. It's the ultimate tool for achieving reliable returns without the need for constant monitoring, freeing you to enjoy the benefits of smart, stress-free investing.",
+      "cta": "Apply Now",
+      "cta_url": "/apply"
+    }
+  ],
+  "unique_features": [
+    {
+      "icon": "bi-person-check-fill",
+      "title": "Personalized Setup Support",
+      "desc": "Enjoy a seamless onboarding experience with a dedicated Customer Success Manager to guide you every step of the way."
+    },
+    {
+      "icon": "bi-shield-lock-fill",
+      "title": "Full Control of Your Investment",
+      "desc": "Retain complete access to your funds while having full control over the algorithm\u2014your money stays in your account."
+    },
+    {
+      "icon": "bi-mortarboard-fill",
+      "title": "Exclusive Trading Insights and Education",
+      "desc": "Gain valuable knowledge of trading algorithms with our comprehensive forex and commodities course, plus monthly webinars."
+    },
+    {
+      "icon": "bi-patch-check-fill",
+      "title": "Risk-Free Guarantee",
+      "desc": "Enjoy peace of mind with our 30-day money-back guarantee\u2014if you're not satisfied, receive a full refund, no questions asked."
+    }
+  ],
+  "brokers": [
+    "IC Markets",
+    "Pepperstone",
+    "FP Markets",
+    "FXCM",
+    "XM",
+    "Exness",
+    "Tickmill",
+    "BlackBull"
+  ],
+  "plans": [
+    {
+      "id": 1,
+      "name": "Standard Plan",
+      "popularity": "12% of customers choose this option",
+      "price": 799,
+      "period": "yearly",
+      "badge": null,
+      "cta": "Buy Now",
+      "cta_url": "/apply?plan=standard",
+      "features": [
+        {
+          "text": "Yearly License",
+          "included": true
+        },
+        {
+          "text": "Works on 1 Account",
+          "included": true
+        },
+        {
+          "text": "Installation Guide",
+          "included": true
+        },
+        {
+          "text": "MT4 and MT5 EA",
+          "included": true
+        },
+        {
+          "text": "Future Updates Included",
+          "included": true
+        },
+        {
+          "text": "Exclusive License Panel Access",
+          "included": true
+        },
+        {
+          "text": "Access to exclusive trading community",
+          "included": true
+        },
+        {
+          "text": "Exclusive Insight Video on EA Strategy",
+          "included": false
+        },
+        {
+          "text": "1 Month free VPS",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Pro Plan",
+      "popularity": "58% of customers choose this option",
+      "price": 999,
+      "period": "yearly",
+      "badge": "Most Popular",
+      "cta": "Buy Now",
+      "cta_url": "/apply?plan=pro",
+      "features": [
+        {
+          "text": "Yearly License",
+          "included": true
+        },
+        {
+          "text": "Works on 3 Accounts",
+          "included": true
+        },
+        {
+          "text": "Installation Guide",
+          "included": true
+        },
+        {
+          "text": "MT4 and MT5 EA",
+          "included": true
+        },
+        {
+          "text": "Future Updates Included",
+          "included": true
+        },
+        {
+          "text": "Exclusive License Panel Access",
+          "included": true
+        },
+        {
+          "text": "Access to exclusive trading community",
+          "included": true
+        },
+        {
+          "text": "Exclusive Insight Video on EA Strategy",
+          "included": true
+        },
+        {
+          "text": "1 Month free VPS",
+          "included": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Unlimited Plan",
+      "popularity": "30% of customers choose this option",
+      "price": 1499,
+      "period": "one time",
+      "badge": "Best Value",
+      "cta": "Apply for a call",
+      "cta_url": "/apply?plan=unlimited",
+      "features": [
+        {
+          "text": "Lifetime License",
+          "included": true
+        },
+        {
+          "text": "Works on 5 Accounts",
+          "included": true
+        },
+        {
+          "text": "Installation Guide",
+          "included": true
+        },
+        {
+          "text": "Future Updates Included",
+          "included": true
+        },
+        {
+          "text": "Exclusive License Panel Access",
+          "included": true
+        },
+        {
+          "text": "1:1 Support by customer success manager",
+          "included": true
+        },
+        {
+          "text": "Access to exclusive trading community",
+          "included": true
+        },
+        {
+          "text": "Indicators and Strategies worth $997",
+          "included": true
+        },
+        {
+          "text": "3 months free VPS worth $100",
+          "included": true
+        },
+        {
+          "text": "1 year macrometrics access worth $249",
+          "included": true
+        },
+        {
+          "text": "30 day guarantee on software",
+          "included": true
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Why consider using a trading robot?",
+      "a": "Trading robots automate the complex processes of analysis and execution in the financial markets. By following predefined criteria and algorithms, these robots can open and close trades with speed and precision that far surpass human capabilities. Operating around the clock, trading robots don't experience fatigue, emotional bias, or the need for rest, making them exceptionally reliable. Unlike humans, who may struggle with consistency and reaction time, a trading robot delivers unwavering performance."
+    },
+    {
+      "q": "What are the monthly returns?",
+      "a": "The returns depend completely on your risk. But with default settings and a 1% risk per trade you can expect around 3-4% monthly return."
+    },
+    {
+      "q": "Do you have a Myfxbook or investor login?",
+      "a": "Yes, we have a verified Myfxbook account with our full track record available. We cannot share our investor login due to risk of copy trading."
+    },
+    {
+      "q": "How do I receive my order?",
+      "a": "Your order will be automatically delivered to your email. You will get access to your license and EA Download Panel. This Panel will also let you change your active account numbers for the EA."
+    },
+    {
+      "q": "Can I use my broker?",
+      "a": "You can use any broker but we strongly suggest using our partnered broker as we saw the best results with them. Brokers can sometimes have slightly different price feeds and also increased slippage which will affect the bot's performance."
+    },
+    {
+      "q": "Do I need a computer to get started?",
+      "a": "You will need a computer (Windows/MacOS) to set it up. In addition we strongly advise using a VPS in order to have the bot running 24/7 without any issues."
+    },
+    {
+      "q": "What is the minimum deposit?",
+      "a": "You need a minimum deposit of $10,000 in your trading account besides the cost of the software."
+    },
+    {
+      "q": "What is the trading strategy?",
+      "a": "For obvious reasons we cannot fully disclose the trading strategy but we can tell you it's based on a momentum breakout strategy. You will have quick in and out's almost daily. This will reduce stress and exposure to the market a lot."
+    },
+    {
+      "q": "Can I have a free trial?",
+      "a": "Yes! We offer a 14-day FREE trial so you can test the EA completely free on your account and make an informed purchase decision."
+    },
+    {
+      "q": "Does it work on MT4?",
+      "a": "Our EA works on both MT4 and MT5 platforms for Standard and Pro plans."
+    },
+    {
+      "q": "How can I contact you?",
+      "a": "You can email us at support@elitextrade.com or use the contact form on our website. Our team typically responds within 2-4 hours."
+    }
+  ],
+  "team": [
+    {
+      "name": "Alex Rivera",
+      "role": "Co-Founder & CEO",
+      "bio": "10+ years in algorithmic trading and multi-million dollar portfolio management."
+    },
+    {
+      "name": "Mia Chen",
+      "role": "Co-Founder & CTO",
+      "bio": "Quantitative analyst and software architect specializing in retail-focused algorithms."
+    },
+    {
+      "name": "David Okafor",
+      "role": "CMO",
+      "bio": "Marketing strategist with deep roots in fintech and financial services growth."
+    },
+    {
+      "name": "Sophie Laurent",
+      "role": "Project Manager",
+      "bio": "Ensures every client gets a seamless experience from onboarding to daily operations."
+    }
+  ],
+  "trustpilot_names": [
+    "James H.",
+    "Priya M.",
+    "Carlos R.",
+    "Amara O.",
+    "Lucas B.",
+    "Nina K.",
+    "Tom W.",
+    "Sara J.",
+    "Felix D.",
+    "Olga P.",
+    "Marco S.",
+    "Zara A.",
+    "Jake L.",
+    "Emma T.",
+    "Ravi G.",
+    "Chloe F.",
+    "Yusuf B.",
+    "Diana C."
+  ],
+  "trial_submissions": [],
+  "contact_submissions": [],
+  "applications": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password_hash": "scrypt:32768:8:1$hFHjWX1SdUvlDo1j$3668965d6e94624edbf05bb58de5dc7f2c6cc755dfd5d2be4d577f68aa5dc4bf7cfaa544fa0c123dd402db35b81fca89416619918ab0d7b32a0cbbeb2bb1de00",
+      "email": "admin@elitextrade.com",
+      "role": "admin",
+      "name": "Admin User",
+      "created": "2025-01-01 00:00",
+      "active": true
+    },
+    {
+      "id": 2,
+      "username": "user1",
+      "password_hash": "scrypt:32768:8:1$bsJ45om6vmWLEn1n$42a4bc6c65062d7c12e1b20ea59af184928ac1759e8b1508b4e48969fd1845414320625a3cfda3530f40ab9a10fadc06a7d4d6e0d255447413245f5e62785ba3",
+      "email": "user1@elitextrade.com",
+      "role": "user",
+      "name": "Demo User",
+      "created": "2025-01-01 00:00",
+      "active": true
+    }
+  ],
+  "user_sessions": []
+}

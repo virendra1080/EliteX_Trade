@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Contact Us — EliteX Trade{% endblock %}
+
+{% block content %}
+<section class="page-hero-section">
+  <div class="container text-center">
+    <h1 class="page-hero-h1">Contact Us</h1>
+    <p class="page-hero-sub">Have a question? Our team typically responds within 2–4 hours.</p>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="container">
+    <div class="row g-5 justify-content-center">
+      <div class="col-lg-4">
+        <div class="contact-info-panel">
+          <div class="cip-item">
+            <div class="cip-icon"><i class="bi bi-envelope-fill"></i></div>
+            <div>
+              <div class="cip-label">Email</div>
+              <div class="cip-val">{{ d.site.email }}</div>
+            </div>
+          </div>
+          <div class="cip-item">
+            <div class="cip-icon"><i class="bi bi-telephone-fill"></i></div>
+            <div>
+              <div class="cip-label">Phone</div>
+              <div class="cip-val">{{ d.site.phone }}</div>
+            </div>
+          </div>
+          <div class="cip-item">
+            <div class="cip-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div>
+              <div class="cip-label">Address</div>
+              <div class="cip-val">{{ d.site.address }}</div>
+            </div>
+          </div>
+          <div class="cip-item">
+            <div class="cip-icon"><i class="bi bi-clock-fill"></i></div>
+            <div>
+              <div class="cip-label">Support Hours</div>
+              <div class="cip-val">24 / 7 — Always Available</div>
+            </div>
+          </div>
+          <div class="cip-socials mt-4">
+            <a href="{{ d.site.telegram }}" target="_blank"><i class="bi bi-telegram"></i></a>
+            <a href="{{ d.site.whatsapp }}" target="_blank"><i class="bi bi-whatsapp"></i></a>
+            <a href="{{ d.site.instagram }}" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="{{ d.site.discord }}" target="_blank"><i class="bi bi-discord"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="contact-form-panel">
+          <h3 class="cfp-title">Send Us a Message</h3>
+          <form method="POST" action="{{ url_for('contact') }}">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control ex-input" placeholder="John Smith" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email Address *</label>
+                <input type="email" name="email" class="form-control ex-input" placeholder="john@email.com" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Message *</label>
+                <textarea name="message" class="form-control ex-input" rows="5" placeholder="How can we help?" required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-gold w-100 btn-lg">
+                  Send Message <i class="bi bi-send-fill ms-2"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
