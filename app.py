@@ -341,4 +341,4 @@ def not_found(e):
     return render_template("404.html", d=load(), current_user=get_current_user()), 404
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5000)
