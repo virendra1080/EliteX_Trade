@@ -1729,3 +1729,61 @@ body > .announcement-bar ~ main {
   .tv-chart-wrap #tvWidget{ height:340px }
   .tv-tab{ padding:7px 12px;font-size:.76rem }
 }
+
+/* ═══════════════════════════════════════════════════════
+   NEW — Top Ticker Tape + Chart Tab Fixes
+═══════════════════════════════════════════════════════ */
+
+/* ── TOP TICKER (sits right below navbar) ── */
+.tv-top-ticker{
+  position:relative;
+  z-index:990;                      /* just below navbar (1000) */
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  /* push down to clear fixed navbar + announcement bar height */
+  margin-top:0;
+}
+.tv-top-ticker .tradingview-widget-container{
+  background:transparent;
+  min-height:44px;
+}
+
+/* Account for top ticker when navbar is fixed */
+body { padding-top:0; }
+
+/* ── IMPROVED TV CHART WRAP ── */
+.tv-chart-wrap{
+  min-height:500px;
+}
+#tvWidget, #tv-chart-container > .tradingview-widget-container{
+  height:500px !important;
+}
+#tvWidget .tradingview-widget-container__widget{
+  height:500px !important;
+}
+
+/* ── TV TABS — cleaner active state ── */
+.tv-tab{
+  letter-spacing:0;
+  font-size:.84rem;
+}
+.tv-tab.active{
+  box-shadow:0 0 0 1px var(--gold), 0 4px 16px rgba(201,168,76,0.2);
+}
+
+/* ── HERO pushdown for top ticker ── */
+/* The top ticker is inside the content flow (not fixed),
+   so hero naturally starts below it — no extra margin needed */
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  .tv-top-ticker{
+    font-size:.75rem;
+  }
+  #tvWidget, #tv-chart-container > .tradingview-widget-container{
+    height:360px !important;
+  }
+  #tvWidget .tradingview-widget-container__widget{
+    height:360px !important;
+  }
+}

@@ -3,30 +3,88 @@
 
 {% block extra_js %}
 <script>
-// Switch TradingView chart symbol when tab clicked
+// TradingView symbol switching — uses iframe src swap (reliable cross-browser method)
+var TV_SYMBOLS = {
+  'OANDA:XAUUSD':    'OANDA%3AXAUUSD',
+  'FX:EURUSD':       'FX%3AEURUSD',
+  'FX:GBPUSD':       'FX%3AGBPUSD',
+  'BITSTAMP:BTCUSD': 'BITSTAMP%3ABTCUSD',
+  'FOREXCOM:SPXUSD': 'FOREXCOM%3ASPXUSD'
+};
+
 function switchChart(symbol, btn) {
-  document.querySelectorAll('.tv-tab').forEach(b => b.classList.remove('active'));
+  // Update active tab
+  document.querySelectorAll('.tv-tab').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 
-  const wrap = document.getElementById('tvWidget');
-  // Remove old script
-  wrap.querySelectorAll('script').forEach(s => s.remove());
-  wrap.querySelector('.tradingview-widget-container__widget').innerHTML = '';
+  // Find the iframe TradingView created and update its src
+  var wrap = document.getElementById('tvWidget');
+  var iframe = wrap ? wrap.querySelector('iframe') : null;
+  if (iframe) {
+    var src = iframe.src;
+    // Replace the symbol parameter in the iframe URL
+    src = src.replace(/symbol=[^&]+/, 'symbol=' + encodeURIComponent(symbol));
+    iframe.src = src;
+    return;
+  }
 
-  const s = document.createElement('script');
-  s.src   = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  // Fallback: rebuild the whole container via innerHTML + new script
+  var container = document.getElementById('tv-chart-container');
+  if (!container) return;
+
+  var cfg = {
+    autosize: true, symbol: symbol, interval: "60",
+    timezone: "Etc/UTC", theme: "dark", style: "1", locale: "en",
+    backgroundColor: "rgba(7,10,15,1)",
+    gridColor: "rgba(201,168,76,0.06)",
+    hide_top_toolbar: false, hide_legend: false,
+    save_image: false, calendar: false, hide_volume: false,
+    support_host: "https://www.tradingview.com"
+  };
+
+  container.innerHTML =
+    '<div class="tradingview-widget-container" id="tvWidget" style="height:500px">' +
+    '<div class="tradingview-widget-container__widget" style="height:500px"></div>' +
+    '</div>';
+
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.src  = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   s.async = true;
-  s.text  = JSON.stringify({
-    autosize:true, symbol:symbol, interval:"60",
-    timezone:"Etc/UTC", theme:"dark", style:"1", locale:"en",
-    backgroundColor:"rgba(7,10,15,1)",
-    gridColor:"rgba(201,168,76,0.06)",
-    hide_top_toolbar:false, save_image:false, hide_volume:false
-  });
-  wrap.appendChild(s);
+  s.innerHTML = JSON.stringify(cfg);
+  document.getElementById('tvWidget').appendChild(s);
 }
 </script>
 {% endblock %}{% block content %}
+
+<!-- ═══════════ TRADINGVIEW TICKER TAPE — TOP OF PAGE ═══════════ -->
+<div class="tv-top-ticker">
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript"
+      src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        {"proName":"OANDA:XAUUSD","title":"Gold"},
+        {"proName":"FX:EURUSD","title":"EUR/USD"},
+        {"proName":"FX:GBPUSD","title":"GBP/USD"},
+        {"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},
+        {"proName":"BITSTAMP:ETHUSD","title":"Ethereum"},
+        {"proName":"NASDAQ:QQQ","title":"NASDAQ"},
+        {"proName":"FOREXCOM:SPXUSD","title":"S&P 500"},
+        {"proName":"FX:USDJPY","title":"USD/JPY"},
+        {"proName":"FX:USDCHF","title":"USD/CHF"},
+        {"proName":"OANDA:XAGUSD","title":"Silver"}
+      ],
+      "showSymbolLogo": true,
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "colorTheme": "dark",
+      "locale": "en"
+    }
+    </script>
+  </div>
+</div>
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero-section" style="background-image:url('{{ url_for('static', filename='img/hero-bg.jpg') }}')">
@@ -98,36 +156,6 @@ function switchChart(symbol, btn) {
   </div>
 </section>
 
-<!-- ═══════════════ LIVE MARKET PRICES — TRADINGVIEW ═══════════════ -->
-<section class="tv-ticker-section">
-  <!-- TradingView Ticker Tape Widget -->
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript"
-      src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-      "symbols": [
-        {"proName":"OANDA:XAUUSD","title":"Gold"},
-        {"proName":"FX:EURUSD","title":"EUR/USD"},
-        {"proName":"FX:GBPUSD","title":"GBP/USD"},
-        {"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},
-        {"proName":"BITSTAMP:ETHUSD","title":"Ethereum"},
-        {"proName":"NASDAQ:QQQ","title":"NASDAQ"},
-        {"proName":"FOREXCOM:SPXUSD","title":"S&P 500"},
-        {"proName":"FX:USDJPY","title":"USD/JPY"},
-        {"proName":"FX:USDCHF","title":"USD/CHF"},
-        {"proName":"OANDA:XAGUSD","title":"Silver"}
-      ],
-      "showSymbolLogo": true,
-      "isTransparent": true,
-      "displayMode": "adaptive",
-      "colorTheme": "dark",
-      "locale": "en"
-    }
-    </script>
-  </div>
-</section>
-
 <!-- ═══════════════ LIVE CHART — TRADINGVIEW ═══════════════ -->
 <section class="tv-chart-section">
   <div class="container">
@@ -137,39 +165,39 @@ function switchChart(symbol, btn) {
       <p class="section-para mx-auto">Track live prices of the instruments our EA trades — updated every second.</p>
     </div>
 
-    <!-- Symbol tabs -->
+    <!-- Symbol tabs — each holds its own full chart, hidden/shown via CSS -->
     <div class="tv-tabs mb-3">
-      {% for sym, label in [('OANDA:XAUUSD','Gold / USD'),('FX:EURUSD','EUR / USD'),('FX:GBPUSD','GBP / USD'),('BITSTAMP:BTCUSD','BTC / USD'),('FOREXCOM:SPXUSD','S&P 500')] %}
-      <button class="tv-tab {% if loop.first %}active{% endif %}" onclick="switchChart('{{ sym }}', this)">{{ label }}</button>
-      {% endfor %}
+      <button class="tv-tab active"   onclick="switchChart('OANDA:XAUUSD',   this)">🥇 Gold / USD</button>
+      <button class="tv-tab"          onclick="switchChart('FX:EURUSD',       this)">€ EUR / USD</button>
+      <button class="tv-tab"          onclick="switchChart('FX:GBPUSD',       this)">£ GBP / USD</button>
+      <button class="tv-tab"          onclick="switchChart('BITSTAMP:BTCUSD', this)">₿ BTC / USD</button>
+      <button class="tv-tab"          onclick="switchChart('FOREXCOM:SPXUSD', this)">📈 S&amp;P 500</button>
     </div>
 
-    <!-- TradingView Chart Widget -->
-    <div class="tv-chart-wrap">
-      <div id="tv-chart-container">
-        <div class="tradingview-widget-container" id="tvWidget" style="height:480px">
-          <div class="tradingview-widget-container__widget" style="height:480px"></div>
-          <script type="text/javascript"
-            src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-          {
-            "autosize": true,
-            "symbol": "OANDA:XAUUSD",
-            "interval": "60",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "en",
-            "backgroundColor": "rgba(7, 10, 15, 1)",
-            "gridColor": "rgba(201, 168, 76, 0.06)",
-            "hide_top_toolbar": false,
-            "hide_legend": false,
-            "save_image": false,
-            "calendar": false,
-            "hide_volume": false,
-            "support_host": "https://www.tradingview.com"
-          }
-          </script>
-        </div>
+    <!-- Chart container — rebuilt by JS on tab click -->
+    <div class="tv-chart-wrap" id="tv-chart-container">
+      <div class="tradingview-widget-container" id="tvWidget" style="height:500px">
+        <div class="tradingview-widget-container__widget" style="height:500px"></div>
+        <script type="text/javascript"
+          src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "OANDA:XAUUSD",
+          "interval": "60",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "backgroundColor": "rgba(7, 10, 15, 1)",
+          "gridColor": "rgba(201, 168, 76, 0.06)",
+          "hide_top_toolbar": false,
+          "hide_legend": false,
+          "save_image": false,
+          "calendar": false,
+          "hide_volume": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
       </div>
     </div>
   </div>
