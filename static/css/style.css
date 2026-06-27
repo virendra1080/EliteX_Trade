@@ -1787,3 +1787,262 @@ body { padding-top:0; }
     height:360px !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   V5 FIXES — Hero Center, Mobile, Team Anon,
+   Trade History Screenshot, Free Trial Removed
+═══════════════════════════════════════════════════════ */
+
+/* ── HERO — always centered, works on all screen sizes ── */
+.hero-section{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-inner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 80px 16px 60px;
+}
+.hero-center-wrap{
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-heading{
+  font-size: clamp(2rem, 6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  width: 100%;
+}
+.hero-sub{
+  font-size: clamp(.95rem, 2.5vw, 1.2rem);
+  color: var(--txt2);
+  font-weight: 400;
+  max-width: 580px;
+  text-align: center;
+  margin: 0 auto;
+}
+.hero-cta{
+  padding: 14px 44px;
+  font-size: 1rem;
+  margin-top: 28px !important;
+}
+
+/* ── TEAM — anonymous (no names, just icon + role + bio) ── */
+.team-avatar-anon{
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--gold-dim);
+  border: 2px solid var(--border-g);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: var(--gold);
+  margin: 0 auto 14px;
+}
+
+/* ── TRADE HISTORY SCREENSHOT ── */
+.myfx-mobile-wrap{
+  padding: 24px;
+}
+.myfx-mobile-img{
+  max-width: 260px;
+  width: 100%;
+  border-radius: 18px;
+  border: 2px solid var(--border-g);
+  box-shadow: 0 12px 48px rgba(0,0,0,.6), 0 0 0 1px rgba(201,168,76,.15);
+  display: block;
+  margin: 0 auto;
+}
+.myfx-trade-stats{
+  padding: 8px 0;
+}
+.myfx-trade-title{
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg,#c9a84c,#e8c76a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.myfx-trade-desc{
+  color: var(--txt2);
+  font-size: .9rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.myfx-trade-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.myfx-tg-item{
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.myfx-tg-val{
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.myfx-tg-val.up     { color: #4ade80; }
+.myfx-tg-val.neutral{ color: var(--gold); }
+.myfx-tg-lbl{
+  font-size: .68rem;
+  color: var(--txt3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.myfx-trade-note{
+  background: rgba(201,168,76,.08);
+  border: 1px solid var(--border-g);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: .78rem;
+  color: var(--txt2);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════
+   COMPREHENSIVE MOBILE RESPONSIVE FIXES
+═══════════════════════════════════════════════════════ */
+
+/* Base mobile */
+@media (max-width: 991px) {
+  /* Announcement bar hidden on small screens */
+  .announcement-bar { display: none; }
+
+  /* Navbar */
+  #mainNav { position: sticky; top: 0; z-index: 1000;
+    background: rgba(7,10,15,.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border); }
+  .navbar-collapse {
+    background: rgba(7,10,15,.98);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+  .nav-cta-group {
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 10px;
+  }
+  .nav-cta-group .btn,
+  .nav-cta-group a { width: 100%; text-align: center; }
+}
+
+@media (max-width: 768px) {
+  /* Sections */
+  .why-section-bg, .future-section,
+  .unique-section, .reviews-section,
+  .brokers-section, .pricing-section,
+  .faq-section, .myfx-section,
+  .discord-section, .tv-chart-section,
+  .about-stats-section, .team-section,
+  .powered-section, .contact-section,
+  .apply-section { padding: 55px 0; }
+
+  /* Section headings */
+  .section-h2 { font-size: 1.65rem; }
+  .page-hero-h1 { font-size: 1.75rem; }
+
+  /* Why stats */
+  .why-stats {
+    flex-direction: column;
+  }
+  .why-stat {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .why-stat:last-child { border-bottom: none; }
+
+  /* Future section */
+  .future-visual { height: 200px; }
+  .mb-6 { margin-bottom: 40px; }
+
+  /* Review track */
+  .review-card { width: 260px; }
+
+  /* Pricing */
+  .plan-card { padding: 22px 18px; }
+  .plan-price { font-size: 2rem; }
+
+  /* Myfxbook */
+  .myfx-stats-strip { flex-direction: column; }
+  .myfx-qs-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .myfx-qs-item:last-child { border-bottom: none; }
+  .myfx-mobile-img { max-width: 200px; }
+  .myfx-trade-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Trade history section on mobile */
+  .myfx-mobile-wrap { padding: 16px; }
+  .myfx-trade-title { font-size: 1.1rem; }
+
+  /* TradingView */
+  .tv-tabs { gap: 5px; }
+  .tv-tab { padding: 6px 10px; font-size: .75rem; }
+  #tvWidget,
+  #tv-chart-container > .tradingview-widget-container { height: 320px !important; }
+  #tvWidget .tradingview-widget-container__widget { height: 320px !important; }
+  .tv-chart-wrap { min-height: 320px; }
+
+  /* Auth */
+  .auth-box { padding: 24px 18px; }
+
+  /* User dashboard */
+  .udash-action-card { padding: 14px 16px; }
+
+  /* Contact */
+  .contact-info-panel, .contact-form-panel { padding: 22px; }
+
+  /* Apply */
+  .apply-panel form { padding: 18px !important; }
+
+  /* Footer */
+  .footer-logo { font-size: 1.1rem; }
+  .site-footer { padding: 45px 0 24px; }
+
+  /* WhatsApp float */
+  .whatsapp-float { width: 50px; height: 50px; font-size: 1.4rem;
+    bottom: 18px; right: 14px; }
+  .wa-tooltip { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-heading { font-size: 1.75rem; }
+  .hero-sub { font-size: .9rem; }
+  .hero-cta { padding: 12px 28px; font-size: .9rem; }
+
+  .why-content-glass { padding: 20px 16px; }
+
+  .plan-card { padding: 18px 14px; }
+
+  .tv-tabs { flex-wrap: wrap; }
+  .tv-tab { font-size: .7rem; padding: 5px 8px; }
+
+  .brokers-grid { gap: 8px; }
+  .broker-chip { padding: 8px 16px; font-size: .8rem; }
+
+  .myfx-mobile-img { max-width: 170px; }
+
+  .auth-box { padding: 20px 14px; }
+
+  .admin-content { padding: 16px; }
+}

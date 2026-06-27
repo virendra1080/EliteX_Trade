@@ -92,16 +92,14 @@ function switchChart(symbol, btn) {
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="container hero-inner">
-    <div class="row align-items-center min-vh-100 py-5">
-      <div class="col-lg-8 mx-auto text-center">
-        <h1 class="hero-heading">
-          <strong>{{ d.hero.heading }}</strong>
-        </h1>
-        <h2 class="hero-sub">{{ d.hero.subheading }}</h2>
-        <a href="{{ d.hero.cta_primary_url }}" class="btn btn-gold btn-lg mt-4 px-5 hero-cta">
-          {{ d.hero.cta_primary }}
-        </a>
-      </div>
+    <div class="hero-center-wrap">
+      <h1 class="hero-heading">
+        <strong>{{ d.hero.heading }}</strong>
+      </h1>
+      <h2 class="hero-sub">{{ d.hero.subheading }}</h2>
+      <a href="{{ d.hero.cta_primary_url }}" class="btn btn-gold btn-lg mt-4 px-5 hero-cta">
+        {{ d.hero.cta_primary }}
+      </a>
     </div>
   </div>
 </section>
@@ -335,43 +333,6 @@ function switchChart(symbol, btn) {
   </div>
 </section>
 
-<!-- ═══════════════ 14-DAY FREE TRIAL ═══════════════ -->
-<section class="trial-section" id="trial">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 text-center">
-        <div class="trial-badge">Many requested</div>
-        <h2 class="trial-heading">the trial</h2>
-        <p class="trial-sub">And we decided to hand it out completely for free. 14 days for you to test it on your account and see if it fits your expectations. 50% of all trial users begin a subscription, so we are very confident that you're going to like it.</p>
-
-        <div class="trial-box">
-          <div class="trial-highlight">
-            <i class="bi bi-gift-fill me-2"></i>14 day FREE trial
-          </div>
-          <p class="trial-body-text">You can test the EA completely for free for 14 days. You get full access to our software and our community. This ensures you can make an informed decision about your purchase. After signing up you will get a confirmation e-mail with all instructions.</p>
-
-          <form method="POST" action="{{ url_for('free_trial') }}" class="trial-form">
-            <div class="row g-3 justify-content-center">
-              <div class="col-md-4">
-                <input type="text" name="name" class="form-control ex-input" placeholder="First Name">
-              </div>
-              <div class="col-md-4">
-                <input type="email" name="email" class="form-control ex-input" placeholder="Email *" required>
-              </div>
-              <div class="col-md-4">
-                <input type="tel" name="phone" class="form-control ex-input" placeholder="Phone Number *" required>
-              </div>
-              <div class="col-12">
-                <button type="submit" class="btn btn-gold btn-lg px-5 w-100">Submit — Get Free Trial</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════════════ WORKS ON ALL BROKERS ═══════════════ -->
 <section class="brokers-section">
   <div class="container text-center">
@@ -495,12 +456,54 @@ function switchChart(symbol, btn) {
     </div>
 
     <!-- Screenshot 2: Trading Stats -->
-    <div class="myfx-screenshot-wrap mb-5">
+    <div class="myfx-screenshot-wrap mb-4">
       <div class="myfx-ss-label"><i class="bi bi-bar-chart-fill me-2"></i>Detailed Trading Statistics &amp; Win Rate Analysis</div>
       <div class="myfx-ss-img-wrap">
         <img src="{{ url_for('static', filename='img/myfxbook-stats.jpg') }}"
              alt="EliteX Trade Myfxbook Trading Stats — 71.4% Win Rate"
              class="myfx-ss-img">
+      </div>
+    </div>
+
+    <!-- Screenshot 3: Live Trade History (uploaded by client) -->
+    <div class="myfx-screenshot-wrap mb-5">
+      <div class="myfx-ss-label"><i class="bi bi-clock-history me-2"></i>Real Trade History — NAS100 Live Account</div>
+      <div class="myfx-ss-img-wrap myfx-mobile-wrap">
+        <div class="row align-items-center g-4">
+          <div class="col-md-5 text-center">
+            <img src="{{ url_for('static', filename='img/trade-history.png') }}"
+                 alt="EliteX Trade — NAS100 Live Trade History"
+                 class="myfx-mobile-img">
+          </div>
+          <div class="col-md-7">
+            <div class="myfx-trade-stats">
+              <h4 class="myfx-trade-title">NAS100 Live Trading Results</h4>
+              <p class="myfx-trade-desc">Real trades executed on a live account — no demo, no simulations. Our EA trades NAS100 with precision entries, consistent lot sizes and disciplined risk management.</p>
+              <div class="myfx-trade-grid">
+                <div class="myfx-tg-item">
+                  <div class="myfx-tg-val up">+119.29</div>
+                  <div class="myfx-tg-lbl">Total Profit ($)</div>
+                </div>
+                <div class="myfx-tg-item">
+                  <div class="myfx-tg-val">111.02</div>
+                  <div class="myfx-tg-lbl">Balance</div>
+                </div>
+                <div class="myfx-tg-item">
+                  <div class="myfx-tg-val up">0.10</div>
+                  <div class="myfx-tg-lbl">Lot Size</div>
+                </div>
+                <div class="myfx-tg-item">
+                  <div class="myfx-tg-val neutral">NAS100</div>
+                  <div class="myfx-tg-lbl">Instrument</div>
+                </div>
+              </div>
+              <div class="myfx-trade-note">
+                <i class="bi bi-shield-check me-2" style="color:var(--gold)"></i>
+                All trades shown are from a real live brokerage account. Independently verifiable.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

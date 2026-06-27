@@ -23,12 +23,9 @@
       {% for m in d.team %}
       <div class="col-6 col-md-3">
         <div class="team-card">
-          {% set slug = m.name.lower().replace(' ', '-') %}
-        <div class="team-avatar-wrap">
-          <img src="{{ url_for('static', filename='img/team-' ~ slug ~ '.jpg') }}" alt="{{ m.name }}" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="team-avatar" style="display:none">{{ m.name[0] }}{{ m.name.split()[1][0] }}</div>
-        </div>
-          <h5 class="team-name">{{ m.name }}</h5>
+          <div class="team-avatar-anon">
+            <i class="bi bi-person-fill"></i>
+          </div>
           <div class="team-role">{{ m.role }}</div>
           <p class="team-bio">{{ m.bio }}</p>
         </div>

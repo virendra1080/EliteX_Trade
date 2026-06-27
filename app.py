@@ -142,10 +142,11 @@ def login():
     if "user_id" in session:
         return redirect(url_for("admin_dashboard") if session.get("role")=="admin" else url_for("user_dashboard"))
     if request.method == "POST":
-        username = request.form.get("username","").strip()
+        email    = request.form.get("email","").strip().lower()
         password = request.form.get("password","").strip()
         d = load()
-        user = next((u for u in d.get("users",[]) if u["username"]==username), None)
+        # Match by email (case-insensitive)
+        user = next((u for u in d.get("users",[]) if u.get("email","").lower()==email), None)
         if user and user.get("password_hash") and check_password_hash(user["password_hash"], password) and user.get("active",True):
             _set_session(user)
             flash(f"Welcome back, {user['name']}!", "success")
@@ -153,7 +154,7 @@ def login():
             if nxt and nxt.startswith("/"):
                 return redirect(nxt)
             return redirect(url_for("admin_dashboard") if user["role"]=="admin" else url_for("user_dashboard"))
-        flash("Invalid username or password.", "danger")
+        flash("Invalid email or password.", "danger")
     return render_template("login.html", d=load(), current_user=None)
 
 @app.route("/logout")
