@@ -214,9 +214,79 @@
       .admin-sidebar{width:200px}
       .admin-main{margin-left:200px}
     }
+
+    /* ── MOBILE ADMIN (≤640px) ── */
+    @media(max-width:640px){
+      /* Sidebar hidden off-screen by default on mobile */
+      html,body{overflow:auto}
+      .admin-sidebar{
+        width:260px;
+        transform:translateX(-100%);
+        transition:transform .28s cubic-bezier(.4,0,.2,1);
+        z-index:300;
+        box-shadow:4px 0 24px rgba(0,0,0,.5);
+      }
+      .admin-sidebar.open{transform:translateX(0)}
+
+      /* Overlay behind sidebar */
+      .sidebar-overlay{
+        display:none;
+        position:fixed;inset:0;
+        background:rgba(0,0,0,.6);
+        z-index:299;
+        backdrop-filter:blur(2px);
+      }
+      .sidebar-overlay.open{display:block}
+
+      /* Main fills full width */
+      .admin-main{margin-left:0;height:auto;overflow:auto}
+
+      /* Topbar: show hamburger */
+      .admin-topbar{padding:10px 14px}
+      .topbar-menu-btn{
+        display:flex !important;
+        align-items:center;justify-content:center;
+        width:36px;height:36px;
+        background:var(--bg3);
+        border:1px solid var(--border);
+        border-radius:8px;
+        cursor:pointer;color:var(--txt);font-size:1.1rem;
+        flex-shrink:0;
+      }
+      .topbar-title{font-size:.9rem}
+      .topbar-actions .btn-outline-sm:first-child{display:none}/* hide View Site btn */
+
+      /* Content padding */
+      .admin-content{padding:14px}
+
+      /* Cards */
+      .admin-card{padding:14px}
+
+      /* Stat boxes stack */
+      .stat-box{padding:14px 16px}
+      .stat-num{font-size:1.4rem}
+
+      /* Tables scroll */
+      .admin-table{font-size:.78rem}
+      .admin-table th,.admin-table td{padding:8px 10px}
+
+      /* Search full width */
+      .search-box{width:100% !important}
+
+      /* Flash */
+      .admin-flash{right:10px;left:10px;min-width:unset}
+
+      /* Row adjustments */
+      .row.g-3>[class*="col-lg"],.row.g-3>[class*="col-md"]{
+        flex:0 0 100%;max-width:100%;
+      }
+    }
   </style>
 </head>
 <body>
+
+<!-- Sidebar overlay (mobile only) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- ── SIDEBAR ── -->
 <aside class="admin-sidebar">
@@ -268,6 +338,10 @@
 <!-- ── MAIN ── -->
 <div class="admin-main">
   <div class="admin-topbar">
+    <!-- Hamburger — only visible on mobile -->
+    <button class="topbar-menu-btn" id="menuBtn" onclick="openSidebar()" style="display:none">
+      <i class="bi bi-list"></i>
+    </button>
     <span class="topbar-title">{% block page_title %}Dashboard{% endblock %}</span>
     <div class="topbar-actions">
       <a href="{{ url_for('index') }}" target="_blank" class="btn-outline-sm"><i class="bi bi-globe me-1"></i>View Site</a>
@@ -307,6 +381,51 @@
       row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
   }
+
+  // Mobile sidebar toggle
+  var sidebar  = document.querySelector('.admin-sidebar');
+  var overlay  = document.getElementById('sidebarOverlay');
+  var menuBtn  = document.getElementById('menuBtn');
+
+  function openSidebar(){
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Show hamburger only on mobile
+  function checkMobile(){
+    if(window.innerWidth <= 640){
+      menuBtn.style.display = 'flex';
+    } else {
+      menuBtn.style.display = 'none';
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+
+  // Close sidebar when a nav link is clicked on mobile
+  document.querySelectorAll('.sidebar-link').forEach(function(link){
+    link.addEventListener('click', function(){
+      if(window.innerWidth <= 640) closeSidebar();
+    });
+  });
+
+  // Swipe to close sidebar on mobile
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(touchStartX < 60 && e.changedTouches[0].clientX > 120) openSidebar();
+    if(e.changedTouches[0].clientX - touchStartX < -60) closeSidebar();
+  }, {passive:true});
 </script>
 {% block extra_js %}{% endblock %}
 </body>

@@ -2046,3 +2046,200 @@ body { padding-top:0; }
 
   .admin-content { padding: 16px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   V7 — User Dashboard Mobile + Admin Mobile Polish
+═══════════════════════════════════════════════════════ */
+
+/* ── USER DASHBOARD HEADER ── */
+.udash-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.udash-welcome{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:800;
+  margin-bottom:4px;
+  line-height:1.2;
+}
+.udash-name{
+  background:linear-gradient(135deg,#c9a84c,#e8c76a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.udash-sub{
+  color:var(--txt2);
+  font-size:.9rem;
+  margin:0;
+}
+.udash-logout-btn{
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.udash-date{
+  font-size:.85rem !important;
+}
+
+/* ── MINI CHART WRAPPER ── */
+.udash-minichart-wrap{
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  height:200px;
+}
+.udash-chart-lbl{
+  text-align:center;
+  font-size:.72rem;
+  color:var(--txt3);
+  margin-top:5px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+/* ── TABLE SCROLL WRAPPER ── */
+.udash-table-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:8px;
+}
+.udash-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.84rem;
+  min-width:500px; /* forces scroll on tiny screens */
+}
+.udash-table th{
+  background:var(--bg2);color:var(--txt3);
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;
+  padding:9px 14px;border-bottom:1px solid var(--border);text-align:left;
+  white-space:nowrap;
+}
+.udash-table td{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  color:var(--txt2);vertical-align:middle;
+}
+.udash-table tr:last-child td{border-bottom:none}
+.udash-date-cell{
+  color:var(--txt2);
+  font-size:.8rem;
+  white-space:nowrap;
+}
+
+/* ── ACTION CARDS — full-width on mobile ── */
+.udash-action-card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px 20px;
+  color:var(--txt2);
+  font-weight:600;
+  font-size:.9rem;
+  transition:border-color .2s,transform .2s,color .2s;
+  text-decoration:none;
+  width:100%;
+}
+.udash-action-card i:first-child{ font-size:1.2rem;color:var(--gold) }
+.udash-action-card:hover{
+  border-color:var(--border-g);
+  transform:translateY(-3px);
+  color:var(--txt);
+}
+
+/* ── USER DASHBOARD MOBILE ── */
+@media(max-width:640px){
+  .udash-header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .udash-logout-btn{
+    width:100%;
+    text-align:center;
+    justify-content:center;
+  }
+
+  /* Stats — 2 col grid */
+  .udash-stat{
+    padding:14px 12px;
+  }
+  .uds-icon{
+    width:36px;height:36px;
+    font-size:.9rem;
+    margin-bottom:8px;
+  }
+  .uds-num{
+    font-size:1.3rem;
+  }
+  .uds-label{
+    font-size:.65rem;
+  }
+  .udash-date{ font-size:.75rem !important }
+
+  /* Live prices section */
+  .udash-card{ padding:16px 14px }
+  .udash-card-title{ font-size:.8rem;margin-bottom:12px }
+
+  /* Mini charts — full width on mobile */
+  .udash-minichart-wrap{ height:180px }
+
+  /* Action cards */
+  .udash-action-card{ padding:14px 16px;font-size:.85rem }
+}
+
+@media(max-width:400px){
+  .udash-welcome{ font-size:1.2rem }
+  .udash-stat{ padding:12px 10px }
+  .uds-num{ font-size:1.15rem }
+}
+
+/* ── ADMIN MOBILE EXTRAS ── */
+@media(max-width:640px){
+  /* Stat boxes — 2 per row */
+  .stat-box{
+    padding:12px 14px;
+    gap:10px;
+  }
+  .stat-icon{
+    width:38px;height:38px;
+    font-size:1rem;
+  }
+  .stat-num{ font-size:1.3rem }
+  .stat-label{ font-size:.65rem }
+
+  /* Admin table horizontal scroll */
+  .admin-card > div[style*="overflow-x"]{
+    -webkit-overflow-scrolling:touch;
+  }
+  .admin-table{ min-width:560px;font-size:.78rem }
+  .admin-table th,.admin-table td{ padding:8px 10px }
+
+  /* Users table add form — full width */
+  .admin-card form .mb-3,
+  .admin-card form .mb-4{ margin-bottom:12px !important }
+
+  /* Topbar */
+  .topbar-title{ font-size:.88rem;margin:0 8px }
+
+  /* Search boxes full width */
+  div[style*="width:220px"],
+  div[style*="width:200px"]{
+    width:100% !important;
+  }
+
+  /* Recent items in dashboard */
+  .admin-card .d-flex.flex-wrap{
+    flex-direction:column;
+    gap:10px;
+  }
+  .admin-card .d-flex.flex-wrap > *{
+    width:100%;
+  }
+}
